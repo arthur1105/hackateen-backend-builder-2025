@@ -1,0 +1,23 @@
+{
+  "name": "hackateen",
+  "version": "1.0.0",
+  "description": "projeto hackateen",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "Hackateen"
+  ],
+  "author": "Arthur Martin, Ryan Ferreira, Moises Lima",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7"
+  },
+  "type": "module"
+}

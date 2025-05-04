@@ -15,14 +15,14 @@ export const Comments = sequelize.define('comments', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    userId:{
+    userId: {
         type: Sequelize.INTEGER,
         references: {
             model: 'users',
             key: 'userId'
         }
     },
-    postId:{
+    postId: {
         type: Sequelize.INTEGER,
         references: {
             model: 'posts',
@@ -36,31 +36,31 @@ export async function createComment(comment) {
         const resultado = await Comments.create(comment);
         console.log(`Comments ${resultado.nome} foi criado com sucesso!`);
         return resultado;
-    } catch (erro) {
-        console.error('Erro ao criar o Comments:', erro);
-        throw erro;
+    } catch (error) {
+        console.error('Error creating Comments:', error);
+        throw error;
     }
 };
 
 export async function readComments() {
     try {
         const resultado = await Comments.findAll();
-        console.log(`Comments consultados com sucesso!`, resultado);
+        console.log(`Comments queried successfully!`, resultado);
         return resultado;
-    } catch (erro) {
-        console.error('Erro ao buscar os Comments:', erro);
-        throw erro;
+    } catch (error) {
+        console.error('Error searching Comments:', error);
+        throw error;
     }
 };
 
 export async function readCommentsPerId(id) {
     try {
         const resultado = await Comments.findByPk(id);
-        console.log(`Comments consultado com sucesso!`, resultado);
+        console.log(`Comments successfully queried!`, resultado);
         return resultado;
-    } catch (erro) {
-        console.error('Erro ao buscar os Comments:', erro);
-        throw erro;
+    } catch (error) {
+        console.error('Error fetching Comments:', error);
+        throw error;
     }
 };
 
@@ -74,23 +74,23 @@ export async function updateCommentsPerId(id, dadosComments) {
                 }
             }
             resultado.save();
-            console.log(`Comments atualizado com sucesso!`, resultado);
+            console.log(`Comments successfully updated!`, resultado);
         }
 
         return resultado;
-    } catch (erro) {
-        console.error('Erro ao atualizar os Comments:', erro);
-        throw erro;
+    } catch (error) {
+        console.error('Error updating Comments:', error);
+        throw error;
     }
 };
 
 export async function deleteCommentsPerId(id) {
     try {
         const resultado = await Comments.destroy({ where: { id: id } });
-        console.log(`Comments deletado com sucesso!`, resultado);
+        console.log(`Comments deleted successfully!`, resultado);
         return resultado;
-    } catch (erro) {
-        console.error('Erro ao deletar os Comments:', erro);
-        throw erro;
+    } catch (error) {
+        console.error('Error deleting Comments:', error);
+        throw error;
     }
 };

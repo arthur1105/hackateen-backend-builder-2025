@@ -2,7 +2,7 @@ import { sequelize } from './database.js';
 import Sequelize from 'sequelize';
 
 export const Comments = sequelize.define('comments', {
-    comment_id: {
+    commentId: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true

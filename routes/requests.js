@@ -1,10 +1,10 @@
 import express from 'express';
-import { lePedidosPorId, lePedidos, criaPedido } from './../models.js';
 
+import { criaProduto, leProduto, leProdutoPorId, atualizaProdutoPorId, deletaProdutoPorId } from './../models/requests.js';
 
-export const rotasPedido = express.Router();
+export const requestsRoute = express.Router();
 
-rotasPedido.post('/pedidos', async (req, res, next) => {
+requestsRoute.post('/pedidos', async (req, res, next) => {
     const pedido = req.body;
     
     res.statusCode = 400;
@@ -49,7 +49,7 @@ rotasPedido.post('/pedidos', async (req, res, next) => {
 
 });
 
-rotasPedido.get('/pedidos/:id', async (req, res, next) => {
+requestsRoute.get('/pedidos/:id', async (req, res, next) => {
      const id = req.params.id;
     
         try {
@@ -81,7 +81,7 @@ rotasPedido.get('/pedidos/:id', async (req, res, next) => {
 
 });
 
-rotasPedido.get('/pedidos', async (req, res, next) => {
+requestsRoute.get('/pedidos', async (req, res, next) => {
      try {
             const resposta = await lePedidos();
             res.statusCode = 200;

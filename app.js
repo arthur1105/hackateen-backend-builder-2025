@@ -1,27 +1,24 @@
+const PORT = 3000;
+
 import sqlite3 from 'sqlite3';
-import { sequelize } from './models.js';
 import express from 'express';
 import bodyParser from 'body-parser';
-import {rotasProduto} from './routes/produtos.js';
-import {rotasPedido} from './routes/pedidos.js';
 
+import { commentsRoute } from './routes/comments.js';
+import { usersRoute } from './routes/users.js';
+import { postsRoute } from './routes/posts.js';
 
+import { sequelize } from './models/database.js';
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(commentsRoute);
+app.use(usersRoute);
+app.use(postsRoute);
 
-app.use(rotasProduto);
-
-app.use(rotasPedido);
-
-
-
-
-
-
-async function InicializaApp() {
-    const db = new sqlite3.Database('./dados.db', (erro) => {
+async function App() {
+    const db = new sqlite3.Database('./database/database.sqlite', (erro) => {
         if (erro) {
             console.error('Erro ao inicializar o banco de dados:', erro);
             return;
@@ -30,11 +27,9 @@ async function InicializaApp() {
     });
     await sequelize.sync();
 
-
-    const porta = 3000;
-
-    app.listen(porta);
+    app.listen(PORT, () => {
+        console.log(`Servidor rodando na porta ${PORT}`);
+    });
 }
 
-
-InicializaApp();
+App();

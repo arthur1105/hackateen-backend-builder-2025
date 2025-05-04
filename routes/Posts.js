@@ -1,11 +1,11 @@
 import express from 'express';
-import { criaProduto, leProduto, leProdutoPorId, atualizaProdutoPorId, deletaProdutoPorId } from './../models.js';
+import { createPost, readPosts, readPostsPerId, updatePostPerId, deletePostPerId } from './../models/posts.js';
 
 
-export const rotasProduto = express.Router();
+export const postsRoute = express.Router();
 
 
-rotasProduto.post('/produtos', async (req, res) => {
+postsRoute.post('/produtos', async (req, res) => {
     const produto = req.body;
 
 
@@ -60,7 +60,7 @@ rotasProduto.post('/produtos', async (req, res) => {
     }
 });
 
-rotasProduto.patch('/produtos/:id', async (req, res) => {
+postsRoute.patch('/produtos/:id', async (req, res) => {
 
     const produto = req.body;
 
@@ -102,7 +102,7 @@ rotasProduto.patch('/produtos/:id', async (req, res) => {
     };
 });
 
-rotasProduto.delete('/produtos/:id', async (req, res) => {
+postsRoute.delete('/produtos/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
@@ -131,19 +131,19 @@ rotasProduto.delete('/produtos/:id', async (req, res) => {
     }
 });
 
-rotasProduto.get('/produtos/:id', async (req, res) => {
+postsRoute.get('/produtos/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
         const resposta = await leProdutoPorId(id);
-   
+
         res.statusCode = 200;
-   
+
         if (!resposta) {
-            res.statusCode = 404;       
+            res.statusCode = 404;
         }
 
-        
+
 
         res.send(resposta);
 
@@ -163,14 +163,14 @@ rotasProduto.get('/produtos/:id', async (req, res) => {
     }
 });
 
-rotasProduto.get('/produtos', async (req, res) => {
+postsRoute.get('/produtos', async (req, res) => {
     try {
         const resposta = await leProduto();
         res.statusCode = 200;
 
         res.send(resposta);
 
-        return ;
+        return;
     } catch (erro) {
         console.error('Erro ao buscar o produtos:', erro);
 

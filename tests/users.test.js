@@ -109,6 +109,7 @@ describe('Testes para o endpoint /users', () => {
         expect(duplicateResponse.statusCode).toBe(500);
         expect(duplicateResponse.body.erro).toHaveProperty('mensagem');
     });
+    
 
     it('Deve retornar todos os usuários cadastrados', async () => {
         const response = await request(app)

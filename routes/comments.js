@@ -7,28 +7,56 @@ commentsRoute.post('/comments', async (req, res) => {
     const comment = req.body;
 
     res.statusCode = 400;
-
-    if (!comment?.content) {
-        const response = {
-            erro: {
-                mensagem: `O atributo 'conteúdo' não foi encontrado, porém é obrigatório`,
-            },
-        };
-
-        return res.send(response);
-    }
-
-    if (!comment?.date) {
-        const response = {
-            erro: {
-                mensagem: `O atributo 'data' não foi encontrado, porém é obrigatório`,
-            },
-        };
-
-        return res.send(response);
-    }
-
     try {
+        if (!comment.content && !comment.date && !user.id && !post.id) {
+            const response = {
+                erro: {
+                    mensagem: `Todos os campos obrigatorios devem ser preenchidos `,
+                },
+            };
+            return res.send(response);
+        }
+        if (!comment?.content) {
+            const response = {
+                erro: {
+                    mensagem: `O atributo 'conteúdo' não foi encontrado, porém é obrigatório`,
+                },
+            };
+
+            return res.send(response);
+        }
+
+        if (!comment?.date) {
+            const response = {
+                erro: {
+                    mensagem: `O atributo 'data' não foi encontrado, porém é obrigatório`,
+                },
+            };
+
+            return res.send(response);
+        }
+
+        if (!comment?.postId) {
+            const response = {
+                erro: {
+                    mensagem: `O atributo 'postId' não foi encontrado, porém é obrigatório`,
+                },
+            };
+
+            return res.send(response);
+        }
+
+        if (!comment?.userId) {
+            const response = {
+                erro: {
+                    mensagem: `O atributo 'userId' não foi encontrado, porém é obrigatório`,
+                },
+            };
+
+            return res.send(response);
+        }
+
+
         const response = await createComment(comment);
         res.statusCode = 201;
 
@@ -38,7 +66,7 @@ commentsRoute.post('/comments', async (req, res) => {
         if (error) {
             console.error('Erro ao criar o comentário:', error);
 
-            res.statusCode = 500;
+            res.statusCode = 400;
             const response = {
                 erro: {
                     mensagem: `Erro ao criar o comentário ${comment.commentId}`
@@ -58,7 +86,7 @@ commentsRoute.patch('/comments/:id', async (req, res) => {
 
     if (!comment?.content && !comment.date) {
         const response = {
-            error: {
+            erro: {
                 mensagem: `Nenhum atributo foi encontrado, porem ao menos um é obrigatório para atualização`,
             },
         };
@@ -141,7 +169,7 @@ commentsRoute.get('/comments', async (req, res) => {
 
         return res.send(response);
     } catch (error) {
-        
+
         res.statusCode = 404;
         const response = {
             erro: {

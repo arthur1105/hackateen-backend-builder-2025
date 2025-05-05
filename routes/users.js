@@ -9,39 +9,45 @@ usersRoute.post('/users', async (req, res) => {
     const user = req.body;
 
     res.statusCode = 400;
-
-
-    if (!user?.name) {
-        const response = {
-            erro: {
-                mensagem: `O atributo 'name' não foi encontrado, porém é obrigatório `,
-            },
-        };
-
-        return res.send(response);
-    }
-
-    if (!user?.email) {
-        const response = {
-            erro: {
-                mensagem: `O atributo 'email' não foi encontrado, porém é obrigatório`,
-            },
-        };
-
-        return res.send(response);
-    }
-
-    if (!user?.password) {
-        const response = {
-            erro: {
-                mensagem: `O atributo 'password' não foi encontrado, porém é obrigatório`,
-            },
-        };
-
-        return res.send(response);
-    }
-
     try {
+        if (!user.name && !user.email && !user.password) {
+            const response = {
+                erro: {
+                    mensagem: `Todos os campos obrigatorios devem ser preenchidos `,
+                },
+            };
+            return res.send(response);
+        }
+        if (!user?.name) {
+            const response = {
+                erro: {
+                    mensagem: `O atributo 'name' não foi encontrado, porém é obrigatório `,
+                },
+            };
+
+            return res.send(response);
+        }
+
+        if (!user?.email) {
+            const response = {
+                erro: {
+                    mensagem: `O atributo 'email' não foi encontrado, porém é obrigatório`,
+                },
+            };
+
+            return res.send(response);
+        }
+
+        if (!user?.password) {
+            const response = {
+                erro: {
+                    mensagem: `O atributo 'password' não foi encontrado, porém é obrigatório`,
+                },
+            };
+
+            return res.send(response);
+        }
+
         const response = await createUser(user);
         res.statusCode = 201;
 
@@ -74,7 +80,7 @@ usersRoute.patch('/users/:id', async (req, res) => {
             },
         };
 
-        return res.send(response);        
+        return res.send(response);
     }
 
     const id = req.params.id;
@@ -94,7 +100,7 @@ usersRoute.patch('/users/:id', async (req, res) => {
                 mensagem: `Erro ao atualizar o user ${id}`
             }
         };
-         return res.send(response);       
+        return res.send(response);
     };
 });
 
@@ -121,7 +127,7 @@ usersRoute.delete('/users/:id', async (req, res) => {
                 mensagem: `Erro ao remover o user ${id}, ${error}`
             }
         };
-        return res.send(response);        
+        return res.send(response);
     }
 });
 
@@ -133,7 +139,7 @@ usersRoute.get('/users/:id', async (req, res) => {
 
         res.statusCode = 200;
 
-        return res.send(response);      
+        return res.send(response);
     } catch (error) {
         res.statusCode = 404;
         const response = {
@@ -141,7 +147,7 @@ usersRoute.get('/users/:id', async (req, res) => {
                 mensagem: `Erro ao buscar o user ${id}, ${error}`
             }
         };
-        return res.send(response);        
+        return res.send(response);
     }
 });
 
@@ -150,7 +156,7 @@ usersRoute.get('/users', async (req, res) => {
         const response = await readUser();
         res.statusCode = 200;
 
-        return res.send(response);        
+        return res.send(response);
     } catch (error) {
 
         res.statusCode = 404;
@@ -159,6 +165,6 @@ usersRoute.get('/users', async (req, res) => {
                 mensagem: `Erro ao buscar os users. ${error}`
             }
         };
-        return res.send(response);        
+        return res.send(response);
     }
 });

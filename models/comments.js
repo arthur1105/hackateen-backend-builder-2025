@@ -13,6 +13,11 @@ export const Comments = sequelize.define('comments', {
     content: {
         type: Sequelize.STRING,
         allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'O campo "content" não pode ser vazio!'
+            }
+        }
     },
     date: {
         type: Sequelize.DATEONLY,
@@ -84,6 +89,7 @@ export async function readCommentsPerId(id) {
 export async function updateCommentsPerId(id, dataComments) {
     try {
         const result = await Comments.findByPk(id);
+        console.log(result);
         if (result === null) {
             throw "Comentário não encontrado!";
         }

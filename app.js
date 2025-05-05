@@ -13,6 +13,7 @@ import { sequelize } from './models/database.js';
 const app = express();
 
 app.use(bodyParser.json());
+
 app.use(commentsRoute);
 app.use(usersRoute);
 app.use(postsRoute);

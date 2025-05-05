@@ -6,6 +6,7 @@ import { Posts } from './posts.js';
 
 export const Comments = sequelize.define('comments', {
     commentId: {
+    commentId: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
@@ -24,6 +25,7 @@ export const Comments = sequelize.define('comments', {
         }
     },
     userId: {
+    userId: {
         type: Sequelize.INTEGER,
         references: {
             model: User,
@@ -31,6 +33,7 @@ export const Comments = sequelize.define('comments', {
         },
         onDelete: 'CASCADE'
     },
+    postId: {
     postId: {
         type: Sequelize.INTEGER,
         references: {

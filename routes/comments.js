@@ -90,14 +90,12 @@ commentsRoute.delete('/comments/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
-        const found = await deleteCommentsPerId(id);
+        await deleteCommentsPerId(id);
+
         res.statusCode = 202;
 
-        if (!found) {
-            res.statusCode = 404;
-        }
         const response = {
-            erro: {
+            response: {
                 mensagem: `Comentário ${id} removido com sucesso!`,
             }
         };
@@ -124,14 +122,9 @@ commentsRoute.get('/comments/:id', async (req, res) => {
 
         res.statusCode = 200;
 
-        if (!response) {
-            res.statusCode = 404;
-        }
         return res.send(response);
-
     } catch (error) {
-
-        res.statusCode = 500;
+        res.statusCode = 404;
         const response = {
             erro: {
                 mensagem: `Erro ao buscar o comentário ${id}, ${error}`
@@ -148,12 +141,11 @@ commentsRoute.get('/comments', async (req, res) => {
 
         return res.send(response);
     } catch (error) {
-        console.error('Erro ao buscar os comentários:', error);
-
-        res.statusCode = 500;
+        
+        res.statusCode = 404;
         const response = {
             erro: {
-                mensagem: `Erro ao buscar o comentários`
+                mensagem: `Erro ao buscar os comentários`
             }
         };
         return res.send(response);

@@ -15,7 +15,12 @@ export const User = sequelize.define('user', {
     email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {
+            isEmail: {
+                msg: 'O campo "email" deve conter um endereço de email válido.'
+            }
+        }
     },
     password: {
         type: Sequelize.STRING,
@@ -37,10 +42,13 @@ export async function createUser(user) {
 export async function readUser() {
     try {
         const result = await User.findAll();
+        if (result.length === 0) {
+            throw "Nenhum User encontrado!";
+        }
         console.log(`Users consultados com sucesso!`, result);
         return result;
     } catch (error) {
-        console.error('Erro ao buscar o User:', error);
+        console.error('Erro ao buscar os Users:', error);
         throw error;
     }
 };
@@ -62,6 +70,9 @@ export async function readUserPerId(id) {
 export async function updateUserPerId(id, dadosUser) {
     try {
         const result = await User.findByPk(id);
+        if (result === null) {
+            throw "User não encontrado!";
+        }
         if (result) {
             for (const key in dadosUser) {
                 if (Object.hasOwn(result.dataValues, key)) {
@@ -70,8 +81,6 @@ export async function updateUserPerId(id, dadosUser) {
             }
             await result.save();
             console.log(`User atualizado com sucesso!`, result);
-        } else {
-            console.log(`User não encontrado!`);
         }
 
         return result;

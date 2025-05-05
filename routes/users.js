@@ -102,15 +102,12 @@ usersRoute.delete('/users/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
-        const found = await deleteUserPerId(id);
+        await deleteUserPerId(id);
 
         res.statusCode = 202;
 
-        if (!found) {
-            res.statusCode = 404;
-        }
         const response = {
-            erro: {
+            response: {
                 mensagem: `User ${id} removido com sucesso!`,
             }
         };
@@ -136,13 +133,9 @@ usersRoute.get('/users/:id', async (req, res) => {
 
         res.statusCode = 200;
 
-        if (!response) {
-            res.statusCode = 404;
-        }
-
         return res.send(response);      
     } catch (error) {
-        res.statusCode = 500;
+        res.statusCode = 404;
         const response = {
             erro: {
                 mensagem: `Erro ao buscar o user ${id}, ${error}`
@@ -159,12 +152,11 @@ usersRoute.get('/users', async (req, res) => {
 
         return res.send(response);        
     } catch (error) {
-        console.error('Erro ao buscar o users:', error);
 
-        res.statusCode = 500;
+        res.statusCode = 404;
         const response = {
             erro: {
-                mensagem: `Erro ao buscar os users`
+                mensagem: `Erro ao buscar os users. ${error}`
             }
         };
         return res.send(response);        

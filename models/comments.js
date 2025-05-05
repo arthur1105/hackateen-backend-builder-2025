@@ -21,7 +21,8 @@ export const Comments = sequelize.define('comments', {
             isDate: {
                 msg: 'Data inválida!'
             }
-        }
+        },
+        allowNull: false
     },
     userId: {
         type: Sequelize.INTEGER,
@@ -55,6 +56,9 @@ export async function createComment(comment) {
 export async function readComments() {
     try {
         const result = await Comments.findAll();
+        if (result.length === 0) {
+            throw "Nenhum comentário encontrado!";
+        }
         console.log(`Comentários consultados com sucesso!`, result);
         return result;
     } catch (error) {
@@ -80,6 +84,9 @@ export async function readCommentsPerId(id) {
 export async function updateCommentsPerId(id, dataComments) {
     try {
         const result = await Comments.findByPk(id);
+        if (result === null) {
+            throw "Comentário não encontrado!";
+        }
         if (result) {
             for (const key in dataComments) {
                 if (Object.hasOwn(result.dataValues, key)) {
@@ -88,8 +95,6 @@ export async function updateCommentsPerId(id, dataComments) {
             }
             await result.save();
             console.log(`Comentário atualizado com sucesso!`, result);
-        } else {
-            console.log(`Comentário não encontrado!`);
         }
 
         return result;
@@ -102,6 +107,9 @@ export async function updateCommentsPerId(id, dataComments) {
 export async function deleteCommentsPerId(id) {
     try {
         const result = await Comments.destroy({ where: { commentId: id } });
+        if (result === 0) {
+            throw "Comentário não encontrado!";
+        }
         console.log(`Comentário deletado com sucesso!`, result);
         return result;
     } catch (error) {

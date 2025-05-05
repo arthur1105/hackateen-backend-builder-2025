@@ -14,7 +14,7 @@ usersRoute.post('/users', async (req, res) => {
     if (!user?.name) {
         const response = {
             erro: {
-                mensagem: `O atributo 'name' não foi found, porém é obrigatório `,
+                mensagem: `O atributo 'name' não foi encontrado, porém é obrigatório `,
             },
         };
 
@@ -24,7 +24,7 @@ usersRoute.post('/users', async (req, res) => {
     if (!user?.email) {
         const response = {
             erro: {
-                mensagem: `O atributo 'email' não foi found, porém é obrigatório`,
+                mensagem: `O atributo 'email' não foi encontrado, porém é obrigatório`,
             },
         };
 
@@ -34,7 +34,7 @@ usersRoute.post('/users', async (req, res) => {
     if (!user?.password) {
         const response = {
             erro: {
-                mensagem: `O atributo 'password' não foi found, porém é obrigatório`,
+                mensagem: `O atributo 'password' não foi encontrado, porém é obrigatório`,
             },
         };
 

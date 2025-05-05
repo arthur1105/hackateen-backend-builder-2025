@@ -2,7 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/users.js';
 
-const SECRET = 'hackateen_secret';
+const SECRET = 'hackateen_key';
 
 export const authRoute = express.Router();
 

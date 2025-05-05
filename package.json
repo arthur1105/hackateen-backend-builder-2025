@@ -12,9 +12,9 @@
     "test-users": "cls && jest -i tests/users.test.js -t",
     "test-comments": "cls && jest -i tests/comments.test.js -t",
     "test-posts": "cls && jest -i tests/posts.test.js -t"
-  },  
+  },
   "keywords": [
-    "Hackateen"
+    "backend-builder, hackateen"
   ],
   "author": "Arthur Martin, Ryan Ferreira, Moises Lima",
   "license": "ISC",

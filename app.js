@@ -10,7 +10,7 @@ import { postsRoute } from './routes/posts.js';
 
 import { sequelize } from './models/database.js';
 
-const app = express();
+export const app = express();
 
 app.use(bodyParser.json());
 
@@ -19,7 +19,7 @@ app.use(usersRoute);
 app.use(postsRoute);
 
 
-async function App() {
+export async function App() {
     const db = new sqlite3.Database('./database/database.sqlite', (erro) => {
         if (erro) {
             console.error('Erro ao inicializar o banco de dados:', erro);
@@ -30,9 +30,8 @@ async function App() {
     
     await sequelize.sync();
 
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
         console.log(`Servidor rodando na porta ${PORT}`);
     });
+    return server;
 }
-
-App();

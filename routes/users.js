@@ -5,181 +5,168 @@ import { createUser, readUser, readUserPerId, updateUserPerId, deleteUserPerId }
 export const usersRoute = express.Router();
 
 
-usersRoute.post('/produtos', async (req, res) => {
-    const produto = req.body;
+usersRoute.post('/users', async (req, res) => {
+    const user = req.body;
 
     res.statusCode = 400;
 
 
-    if (!produto?.nome) {
-        const resposta = {
+    if (!user?.name) {
+        const response = {
             erro: {
-                mensagem: `O atributo 'nome' não foi encontrado é obrigatório`,
+                mensagem: `O atributo 'name' não foi found, porém é obrigatório `,
             },
         };
 
-        res.send(resposta);
-
-        return;
+        return res.send(response);
     }
 
-    if (!produto?.preco) {
-        const resposta = {
+    if (!user?.email) {
+        const response = {
             erro: {
-                mensagem: `O atributo 'preco' não foi encontrado é obrigatório`,
+                mensagem: `O atributo 'email' não foi found, porém é obrigatório`,
             },
         };
 
-        res.send(resposta);
+        return res.send(response);
+    }
 
-        return;
+    if (!user?.password) {
+        const response = {
+            erro: {
+                mensagem: `O atributo 'password' não foi found, porém é obrigatório`,
+            },
+        };
+
+        return res.send(response);
     }
 
     try {
-        const resposta = await criaProduto(produto);
+        const response = await createUser(user);
         res.statusCode = 201;
 
-        res.send(resposta);
-        return;
-    } catch (erro) {
-        if (erro) {
-            console.error('Erro ao criar o produto:', erro);
+        return res.send(response);
+    } catch (error) {
+        if (error) {
+            console.error('Erro ao criar o user:', error);
 
             res.statusCode = 500;
-            const resposta = {
+            const response = {
                 erro: {
-                    mensagem: `Erro ao criar o produto ${produto.nome}`
+                    mensagem: `Erro ao criar o user ${user.name}`
                 }
             };
-            res.send(resposta);
-
-            return;
+            return res.send(response);
         }
     }
 });
 
-usersRoute.patch('/produtos/:id', async (req, res) => {
+usersRoute.patch('/users/:id', async (req, res) => {
 
-    const produto = req.body;
+    const user = req.body;
 
     res.statusCode = 400;
 
-
-    if (!produto?.nome && !produto.preco) {
-        const resposta = {
+    if (!user?.name && !user.email && !user.password) {
+        const response = {
             erro: {
                 mensagem: `Nenhum atributo foi encontrado, porem ao menos um é obrigatório para atualização`,
             },
         };
 
-        res.send(resposta);
-
-        return;
+        return res.send(response);        
     }
 
     const id = req.params.id;
+
     try {
-        const resposta = await atualizaProdutoPorId(id, produto);
+        const response = await updateUserPerId(id, user);
         res.statusCode = 200;
 
-        res.send(resposta);
-        return;
+        return res.send(response);
 
-    } catch (erro) {
-        console.error('Erro ao Atualizar o produto:', erro);
+    } catch (error) {
+        console.error('Erro ao Atualizar o user:', error);
 
         res.statusCode = 500;
-        const resposta = {
+        const response = {
             erro: {
-                mensagem: `Erro ao atualizar o produto ${id}`
+                mensagem: `Erro ao atualizar o user ${id}`
             }
         };
-        res.send(resposta);
-
-        return;
+         return res.send(response);       
     };
 });
 
-usersRoute.delete('/produtos/:id', async (req, res) => {
+usersRoute.delete('/users/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
-        const encontrado = await deletaProdutoPorId(id);
+        const found = await deleteUserPerId(id);
 
-        res.statusCode = 204;
+        res.statusCode = 202;
 
-        if (!encontrado) {
+        if (!found) {
             res.statusCode = 404;
         }
-        res.send();
-
-        return;
-    } catch (erro) {
-        console.error('Erro ao remover o produto:', erro);
-
-        res.statusCode = 500;
-        const resposta = {
+        const response = {
             erro: {
-                mensagem: `Erro ao remover o produto ${id}`
+                mensagem: `User ${id} removido com sucesso!`,
             }
         };
-        res.send(resposta);
 
-        return;
+        return res.send(response);
+
+    } catch (error) {
+        res.statusCode = 500;
+        const response = {
+            erro: {
+                mensagem: `Erro ao remover o user ${id}, ${error}`
+            }
+        };
+        return res.send(response);        
     }
 });
 
-usersRoute.get('/produtos/:id', async (req, res) => {
+usersRoute.get('/users/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
-        const resposta = await leProdutoPorId(id);
+        const response = await readUserPerId(id);
 
         res.statusCode = 200;
 
-        if (!resposta) {
+        if (!response) {
             res.statusCode = 404;
         }
 
-
-
-        res.send(resposta);
-
-        return;
-    } catch (erro) {
-        console.error('Erro ao buscar o produto:', erro);
-
+        return res.send(response);      
+    } catch (error) {
         res.statusCode = 500;
-        const resposta = {
+        const response = {
             erro: {
-                mensagem: `Erro ao buscar o produto ${id}`
+                mensagem: `Erro ao buscar o user ${id}, ${error}`
             }
         };
-        res.send(resposta);
-
-        return;
+        return res.send(response);        
     }
 });
 
-usersRoute.get('/produtos', async (req, res) => {
+usersRoute.get('/users', async (req, res) => {
     try {
-        const resposta = await leProduto();
+        const response = await readUser();
         res.statusCode = 200;
 
-        res.send(resposta);
-
-        return;
-    } catch (erro) {
-        console.error('Erro ao buscar o produtos:', erro);
+        return res.send(response);        
+    } catch (error) {
+        console.error('Erro ao buscar o users:', error);
 
         res.statusCode = 500;
-        const resposta = {
+        const response = {
             erro: {
-                mensagem: `Erro ao buscar o produtos`
+                mensagem: `Erro ao buscar os users`
             }
         };
-        res.send(resposta);
-
-        return;
+        return res.send(response);        
     }
 });

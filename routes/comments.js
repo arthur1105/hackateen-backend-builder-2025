@@ -3,179 +3,160 @@ import { createComment, readComments, readCommentsPerId, updateCommentsPerId, de
 
 export const commentsRoute = express.Router();
 
-commentsRoute.post('/produtos', async (req, res) => {
-    const produto = req.body;
+commentsRoute.post('/comments', async (req, res) => {
+    const comment = req.body;
 
     res.statusCode = 400;
 
-    if (!produto?.nome) {
-        const resposta = {
+    if (!comment?.content) {
+        const response = {
             erro: {
-                mensagem: `O atributo 'nome' não foi encontrado é obrigatório`,
+                mensagem: `O atributo 'conteúdo' não foi encontrado, porém é obrigatório`,
             },
         };
 
-        res.send(resposta);
-        return;
+        return res.send(response);
     }
 
-    if (!produto?.preco) {
-        const resposta = {
+    if (!comment?.date) {
+        const response = {
             erro: {
-                mensagem: `O atributo 'preco' não foi encontrado é obrigatório`,
+                mensagem: `O atributo 'data' não foi encontrado, porém é obrigatório`,
             },
         };
 
-        res.send(resposta);
-        return;
+        return res.send(response);
     }
 
     try {
-        const resposta = await criaProduto(produto);
+        const response = await createComment(comment);
         res.statusCode = 201;
 
-        res.send(resposta);
-        return;
-    } catch (erro) {
-        if (erro) {
-            console.error('Erro ao criar o produto:', erro);
+        return res.send(response);
+
+    } catch (error) {
+        if (error) {
+            console.error('Erro ao criar o comentário:', error);
 
             res.statusCode = 500;
-            const resposta = {
+            const response = {
                 erro: {
-                    mensagem: `Erro ao criar o produto ${produto.nome}`
+                    mensagem: `Erro ao criar o comentário ${comment.commentId}`
                 }
             };
-            res.send(resposta);
-
-            return;
+            return res.send(response);
         }
     }
 });
 
-commentsRoute.patch('/produtos/:id', async (req, res) => {
+commentsRoute.patch('/comments/:id', async (req, res) => {
 
-    const produto = req.body;
+    const comment = req.body;
 
     res.statusCode = 400;
 
 
-    if (!produto?.nome && !produto.preco) {
-        const resposta = {
-            erro: {
+    if (!comment?.content && !comment.date) {
+        const response = {
+            error: {
                 mensagem: `Nenhum atributo foi encontrado, porem ao menos um é obrigatório para atualização`,
             },
         };
 
-        res.send(resposta);
-
-        return;
+        return res.send(response);
     }
 
     const id = req.params.id;
     try {
-        const resposta = await atualizaProdutoPorId(id, produto);
+        const response = await updateCommentsPerId(id, comment);
         res.statusCode = 200;
 
-        res.send(resposta);
-        return;
+        return res.send(response);
 
-    } catch (erro) {
-        console.error('Erro ao Atualizar o produto:', erro);
+    } catch (error) {
+        console.error('Erro ao Atualizar o comentário:', error);
 
         res.statusCode = 500;
-        const resposta = {
+        const response = {
             erro: {
-                mensagem: `Erro ao atualizar o produto ${id}`
+                mensagem: `Erro ao atualizar o comentário ${id}`
             }
         };
-        res.send(resposta);
-
-        return;
+        return res.send(response);
     };
 });
 
-commentsRoute.delete('/produtos/:id', async (req, res) => {
+commentsRoute.delete('/comments/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
-        const encontrado = await deletaProdutoPorId(id);
+        const found = await deleteCommentsPerId(id);
+        res.statusCode = 202;
 
-        res.statusCode = 204;
-
-        if (!encontrado) {
+        if (!found) {
             res.statusCode = 404;
         }
-        res.send();
-
-        return;
-    } catch (erro) {
-        console.error('Erro ao remover o produto:', erro);
-
-        res.statusCode = 500;
-        const resposta = {
+        const response = {
             erro: {
-                mensagem: `Erro ao remover o produto ${id}`
+                mensagem: `Comentário ${id} removido com sucesso!`,
             }
         };
-        res.send(resposta);
+        return res.send(response);
 
-        return;
+    } catch (error) {
+
+        res.statusCode = 500;
+        const response = {
+            erro: {
+                mensagem: `Erro ao remover o Comentário ${id}, ${error}`
+            }
+        };
+        return res.send(response);
+
     }
 });
 
-commentsRoute.get('/produtos/:id', async (req, res) => {
+commentsRoute.get('/comments/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
-        const resposta = await leProdutoPorId(id);
+        const response = await readCommentsPerId(id);
 
         res.statusCode = 200;
 
-        if (!resposta) {
+        if (!response) {
             res.statusCode = 404;
         }
+        return res.send(response);
 
-
-
-        res.send(resposta);
-
-        return;
-    } catch (erro) {
-        console.error('Erro ao buscar o produto:', erro);
+    } catch (error) {
 
         res.statusCode = 500;
-        const resposta = {
+        const response = {
             erro: {
-                mensagem: `Erro ao buscar o produto ${id}`
+                mensagem: `Erro ao buscar o comentário ${id}, ${error}`
             }
         };
-        res.send(resposta);
-
-        return;
+        return res.send(response);
     }
 });
 
-commentsRoute.get('/produtos', async (req, res) => {
+commentsRoute.get('/comments', async (req, res) => {
     try {
-        const resposta = await leProduto();
+        const response = await readComments();
         res.statusCode = 200;
 
-        res.send(resposta);
-
-        return;
-    } catch (erro) {
-        console.error('Erro ao buscar o produtos:', erro);
+        return res.send(response);
+    } catch (error) {
+        console.error('Erro ao buscar os comentários:', error);
 
         res.statusCode = 500;
-        const resposta = {
+        const response = {
             erro: {
-                mensagem: `Erro ao buscar o produtos`
+                mensagem: `Erro ao buscar o comentários`
             }
         };
-        res.send(resposta);
-
-        return;
+        return res.send(response);
     }
 });
 

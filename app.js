@@ -17,6 +17,7 @@ app.use(commentsRoute);
 app.use(usersRoute);
 app.use(postsRoute);
 
+
 async function App() {
     const db = new sqlite3.Database('./database/database.sqlite', (erro) => {
         if (erro) {
@@ -25,7 +26,8 @@ async function App() {
         }
         console.log('Banco de dados conectado com sucesso!');
     });
-    await sequelize.sync();
+    
+    await sequelize.sync({force: true});
 
     app.listen(PORT, () => {
         console.log(`Servidor rodando na porta ${PORT}`);

@@ -16,6 +16,12 @@ export const Posts = sequelize.define('posts', {
     type: {
         type: Sequelize.ENUM('event', 'request', 'alert'),
         allowNull: false,
+        validate: {
+            isIn: {
+                args: [['event', 'request', 'alert']],
+                msg: 'O campo "type" deve ser um dos seguintes valores: event, request, alert.'
+            }
+        }
     },
     content: {
         type: Sequelize.STRING,
@@ -25,8 +31,13 @@ export const Posts = sequelize.define('posts', {
         type: Sequelize.STRING,
     },
     date: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        type: Sequelize.DATEONLY,
+        defaultValue: Sequelize.NOW,
+        validate:{
+            isDate: {
+                msg: 'Data inválida!'
+            }
+        }
     },
     place: {
         type: Sequelize.STRING,
@@ -36,70 +47,80 @@ export const Posts = sequelize.define('posts', {
         references: {
             model: User,
             key: 'userId'
-        }
+        },
+        allowNull: false,
+        onDelete: 'CASCADE'
+
     }
 });
 
 export async function createPost(post) {
     try {
-        const resultado = await Posts.create(post);
-        console.log(`Post ${resultado.title} foi criado com sucesso!`);
-        return resultado;
-    } catch (erro) {
-        console.error('Erro ao criar o Post:', erro);
-        throw erro;
+        const result = await Posts.create(post);
+        console.log(`Post ${result.title} foi criado com sucesso!`);
+        return result;
+    } catch (error) {
+        console.error('Erro ao criar o Post:', error);
+        throw error;
     }
 };
 
 export async function readPosts() {
     try {
-        const resultado = await Posts.findAll();
-        console.log(`Posts consultados com sucesso!`, resultado);
-        return resultado;
-    } catch (erro) {
-        console.error('Erro ao buscar o Posts:', erro);
-        throw erro;
+        const result = await Posts.findAll();
+        console.log(`Posts consultados com sucesso!`, result);
+        return result;
+    } catch (error) {
+        console.error('Erro ao buscar os Posts:', error);
+        throw error;
     }
 };
 
 export async function readPostsPerId(id) {
     try {
-        const resultado = await Posts.findByPk(id);
-        console.log(`Post consultado com sucesso!`, resultado);
-        return resultado;
-    } catch (erro) {
-        console.error('Erro ao buscar o Posts:', erro);
-        throw erro;
+        const result = await Posts.findByPk(id);
+        if (result === null) {
+            throw "Post não encontrado!";
+        }
+        console.log(`Post consultado com sucesso!`, result);
+        return result;
+    } catch (error) {
+        console.error('Erro ao buscar o Post', error);
+        throw error;
     }
 };
 
-export async function updatePostPerId(id, dadosPost) {
+export async function updatePostPerId(id, dataPost) {
     try {
-        const resultado = await Posts.findByPk(id);
-        if (resultado?.id) {
-            for (const chave in dadosPost) {
-                if (chave in resultado) {
-                    resultado[chave] = dadosPost[chave];
+        const result = await Posts.findByPk(id);
+        if (result) {
+            for (const key in dataPost) {
+                if (Object.hasOwn(result.dataValues, key)) {
+                    result[key] = dataPost[key];
                 }
             }
-            resultado.save();
-            console.log(`Post atualizado com sucesso!`, resultado);
+            await result.save();
+            console.log(`Post atualizado com sucesso!`, result);
+        } else {
+            console.log(`Post não encontrado!`);
         }
 
-        return resultado;
-    } catch (erro) {
-        console.error('Erro ao atualizar o Posts:', erro);
-        throw erro;
+        return result;
+    } catch (error) {
+        console.error('Erro ao atualizar o Post:', error);
+        throw error;
     }
 };
 
 export async function deletePostPerId(id) {
     try {
-        const resultado = await Posts.destroy({ where: { id: id } });
-        console.log(`Post deletado com sucesso!`, resultado);
-        return resultado;
-    } catch (erro) {
-        console.error('Erro ao deletar o Post:', erro);
-        throw erro;
+        const result = await Posts.destroy({ where: { postId: id } });
+        if (result === 0) {
+            throw "User não encontrado!";
+        }
+        return result;
+    } catch (error) {
+        console.error('Erro ao deletar o Post:', error);
+        throw error;
     }
 };

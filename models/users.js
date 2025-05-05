@@ -10,6 +10,7 @@ export const User = sequelize.define('user', {
     name: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true
     },
     email: {
         type: Sequelize.STRING,
@@ -24,64 +25,72 @@ export const User = sequelize.define('user', {
 
 export async function createUser(user) {
     try {
-        const resultado = await User.create(user);
-        console.log(`User ${resultado.nome} foi criado com sucesso!`);
-        return resultado;
-    } catch (erro) {
-        console.error('Erro ao criar o User:', erro);
-        throw erro;
+        const result = await User.create(user);
+        console.log(`User ${result.name} foi criado com sucesso!`);
+        return result;
+    } catch (error) {
+        console.error('Erro ao criar o User:', error);
+        throw error;
     }
 };
 
 export async function readUser() {
     try {
-        const resultado = await User.findAll();
-        console.log(`Users consultados com sucesso!`, resultado);
-        return resultado;
-    } catch (erro) {
-        console.error('Erro ao buscar o User:', erro);
-        throw erro;
+        const result = await User.findAll();
+        console.log(`Users consultados com sucesso!`, result);
+        return result;
+    } catch (error) {
+        console.error('Erro ao buscar o User:', error);
+        throw error;
     }
 };
 
 export async function readUserPerId(id) {
     try {
-        const resultado = await User.findByPk(id);
-        console.log(`User consultado com sucesso!`, resultado);
-        return resultado;
-    } catch (erro) {
-        console.error('Erro ao buscar o User:', erro);
-        throw erro;
+        const result = await User.findByPk(id);
+        if (result === null) {
+            throw "User não encontrado!";
+        }
+        console.log(`User consultado com sucesso!`, result);
+        return result;
+    } catch (error) {
+        console.error('Erro ao buscar o User:', error);
+        throw error;
     }
 };
 
 export async function updateUserPerId(id, dadosUser) {
     try {
-        const resultado = await User.findByPk(id);
-        if (resultado?.id) {
-            for (const chave in dadosUser) {
-                if (chave in resultado) {
-                    resultado[chave] = dadosUser[chave];
+        const result = await User.findByPk(id);
+        if (result) {
+            for (const key in dadosUser) {
+                if (Object.hasOwn(result.dataValues, key)) {
+                    result[key] = dadosUser[key];
                 }
             }
-            resultado.save();
-            console.log(`User atualizado com sucesso!`, resultado);
+            await result.save();
+            console.log(`User atualizado com sucesso!`, result);
+        } else {
+            console.log(`User não encontrado!`);
         }
 
-        return resultado;
-    } catch (erro) {
-        console.error('Erro ao atualizar o User:', erro);
-        throw erro;
+        return result;
+    } catch (error) {
+        console.error('Erro ao atualizar o User:', error);
+        throw error;
     }
 };
 
 export async function deleteUserPerId(id) {
     try {
-        const resultado = await User.destroy({ where: { id: id } });
-        console.log(`User deletado com sucesso!`, resultado);
-        return resultado;
-    } catch (erro) {
-        console.error('Erro ao deletar o produto:', erro);
-        throw erro;
+        const result = await User.destroy({ where: { userId: id } });
+        if (result === 0) {
+            throw "User não encontrado!";
+        }
+        console.log(`User deletado com sucesso!`, result);
+        return result;
+    } catch (error) {
+        console.error('Erro ao deletar o user:', error);
+        throw error;
     }
 };

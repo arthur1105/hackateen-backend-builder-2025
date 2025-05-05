@@ -28,7 +28,7 @@ async function App() {
         console.log('Banco de dados conectado com sucesso!');
     });
     
-    await sequelize.sync({force: true});
+    await sequelize.sync();
 
     app.listen(PORT, () => {
         console.log(`Servidor rodando na porta ${PORT}`);

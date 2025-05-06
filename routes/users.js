@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   - name: Usuários
- *     description: Operações relacionadas ao usuários
+ *     description: Operações relacionadas aos usuários
  */
 
 import express from 'express';

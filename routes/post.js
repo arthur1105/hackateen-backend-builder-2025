@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   - name: Posts
- *     description: Operações relacionadas a posts
+ *     description: Operações relacionadas aos posts
  */
 
 import { authMiddleware } from '../middleware/authMiddleware.js';

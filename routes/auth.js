@@ -1,3 +1,10 @@
+/**
+ * @swagger
+ * tags:
+ *   - name: Autenticação
+ *     description: Operações relacionadas ao login
+ */
+
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/users.js';

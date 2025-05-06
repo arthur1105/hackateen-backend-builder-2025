@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   - name: Comentários
- *     description: Operações relacionadas a comentários
+ *     description: Operações relacionadas aos comentários
  */
 
 import express from 'express';

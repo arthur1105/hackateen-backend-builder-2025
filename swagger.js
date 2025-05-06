@@ -5,13 +5,14 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Hackateen API',
+      title: 'KomuniUI API',
       version: '1.0.0',
-      description: 'Documentação da API do Hackateen'
+      description: 'Documentação da API do KomuniUI - Uma plataforma de comunidade local/regional',
     },
   },
-  apis: ['./routes/*.js'],
+  apis: ['./routes/*.js'], 
 };
 
 export const swaggerSpec = swaggerJSDoc(options);
+
 export { swaggerUi };

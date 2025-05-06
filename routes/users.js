@@ -33,7 +33,7 @@ export const usersRoute = express.Router();
  *                 example: Ryan
  *               email:
  *                 type: string
- *                 example: Ryan.Ferreira17@Etec.Sp.Gov.Br
+ *                 example: usuario@email.com
  *               password:
  *                 type: string
  *                 example: password@123

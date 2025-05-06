@@ -48,8 +48,7 @@ npm run start:dev
 
 ## Acessar a API
 
-A API estará disponível localmente em:  
-[http://localhost:3000](http://localhost:3000)
+A API estará disponível localmente em: [http://localhost:3000](http://localhost:3000)
 
 Essa é uma API REST, ou seja, não possui interface visual - as interações são feitas por meio de requisições HTTP (como GET, POST, PUT, DELETE) usando ferramentas como Postman, Insomnia ou diretamente pelo Swagger.
 
@@ -59,9 +58,9 @@ A documentação interativa da API, onde é possível visualizar as rotas dispon
 
 ## Estrutura de Rotas
 A API é estruturada com as seguintes rotas principais:
-- /users: Rota para gerenciar usuários.
-- /posts: Rota para criar e listar publicações.
-- /comments: Rota para interagir com comentários de publicações.
+- **/users**: Rota para gerenciar usuários.
+- **/posts**: Rota para criar e listar publicações.
+- **/comments**: Rota para interagir com comentários de publicações.
 
 ## Testes
 O projeto possui testes automatizados com Jest. Para rodar todos os testes, utilize o comando:

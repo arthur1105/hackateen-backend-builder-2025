@@ -1,8 +1,54 @@
+/**
+ * @swagger
+ * tags:
+ *   - name: Comentários
+ *     description: Operações relacionadas aos comentários
+ */
+
 import express from 'express';
 import { createComment, readComments, readCommentsPerId, updateCommentsPerId, deleteCommentsPerId } from './../models/comments.js';
 
 export const commentsRoute = express.Router();
 
+/**
+ * @swagger
+ * /comments:
+ *   post:
+ *     summary: Cria um novo comentário
+ *     tags: [Comentários]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - content
+ *               - date
+ *               - postId
+ *               - userId
+ *             properties:
+ *               content:
+ *                 type: string
+ *                 example: "Comentário de exemplo"
+ *               date:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2025-05-05T12:00:00Z"
+ *               postId:
+ *                 type: integer
+ *                 example: 1
+ *               userId:
+ *                 type: integer
+ *                 example: 2
+ *     responses:
+ *       201:
+ *         description: Comentário criado com sucesso
+ *       400:
+ *         description: Dados inválidos ou campos obrigatórios ausentes
+ *       500:
+ *         description: Erro interno ao criar comentário
+ */
 commentsRoute.post('/comments', async (req, res) => {
     const comment = req.body;
 
@@ -77,6 +123,40 @@ commentsRoute.post('/comments', async (req, res) => {
     }
 });
 
+
+/**
+ * @swagger
+ * /comments/{id}:
+ *   patch:
+ *     summary: Atualiza um comentário existente
+ *     tags: [Comentários]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do comentário
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               content:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *                 format: date-time
+ *     responses:
+ *       200:
+ *         description: Comentário atualizado com sucesso
+ *       400:
+ *         description: Nenhum atributo fornecido para atualização
+ *       500:
+ *         description: Erro ao atualizar comentário
+ */
 commentsRoute.patch('/comments/:id', async (req, res) => {
 
     const comment = req.body;
@@ -114,6 +194,26 @@ commentsRoute.patch('/comments/:id', async (req, res) => {
     };
 });
 
+
+/**
+ * @swagger
+ * /comments/{id}:
+ *   delete:
+ *     summary: Remove um comentário
+ *     tags: [Comentários]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do comentário
+ *     responses:
+ *       202:
+ *         description: Comentário removido com sucesso
+ *       500:
+ *         description: Erro ao remover comentário
+ */
 commentsRoute.delete('/comments/:id', async (req, res) => {
     const id = req.params.id;
 
@@ -142,6 +242,42 @@ commentsRoute.delete('/comments/:id', async (req, res) => {
     }
 });
 
+
+/**
+ * @swagger
+ * /comments/{id}:
+ *   get:
+ *     summary: Busca um comentário pelo ID
+ *     tags: [Comentários]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do comentário
+ *     responses:
+ *       200:
+ *         description: Comentário encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 commentId:
+ *                   type: integer
+ *                 content:
+ *                   type: string
+ *                 date:
+ *                   type: string
+ *                   format: date-time
+ *                 postId:
+ *                   type: integer
+ *                 userId:
+ *                   type: integer
+ *       404:
+ *         description: Comentário não encontrado
+ */
 commentsRoute.get('/comments/:id', async (req, res) => {
     const id = req.params.id;
 
@@ -162,6 +298,37 @@ commentsRoute.get('/comments/:id', async (req, res) => {
     }
 });
 
+
+/**
+ * @swagger
+ * /comments:
+ *   get:
+ *     summary: Lista todos os comentários
+ *     tags: [Comentários]
+ *     responses:
+ *       200:
+ *         description: Lista de comentários cadastrados
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   commentId:
+ *                     type: integer
+ *                   content:
+ *                     type: string
+ *                   date:
+ *                     type: string
+ *                     format: date-time
+ *                   postId:
+ *                     type: integer
+ *                   userId:
+ *                     type: integer
+ *       404:
+ *         description: Nenhum comentário encontrado
+ */
 commentsRoute.get('/comments', async (req, res) => {
     try {
         const response = await readComments();
@@ -179,4 +346,3 @@ commentsRoute.get('/comments', async (req, res) => {
         return res.send(response);
     }
 });
-

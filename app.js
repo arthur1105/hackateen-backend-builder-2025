@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 
 import { commentsRoute } from './routes/comments.js';
 import { usersRoute } from './routes/users.js';
-import { postsRoute } from './routes/posts.js';
+import { postsRoute } from './routes/post.js';
 import { authRoute } from './routes/auth.js';
 
 import { sequelize } from './models/database.js';
@@ -20,6 +20,11 @@ app.use(usersRoute);
 app.use(postsRoute);
 app.use(authRoute);
 
+// ...existing code...
+import { swaggerSpec, swaggerUi } from './swagger.js';
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// ...existing code...
 
 export async function App() {
     const db = new sqlite3.Database('./database/database.sqlite', (erro) => {

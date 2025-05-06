@@ -1,10 +1,61 @@
+/**
+ * @swagger
+ * tags:
+ *   - name: Usuários
+ *     description: Operações relacionadas ao usuários
+ */
+
 import express from 'express';
 
 import { createUser, readUser, readUserPerId, updateUserPerId, deleteUserPerId } from '../models/users.js';
 
 export const usersRoute = express.Router();
 
-
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Cria um novo usuário
+ *     tags: [Usuários]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Ryan
+ *               email:
+ *                 type: string
+ *                 example: Ryan.Ferreira17@Etec.Sp.Gov.Br
+ *               password:
+ *                 type: string
+ *                 example: password@123
+ *     responses:
+ *       201:
+ *         description: Usuário criado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 userId:
+ *                   type: integer
+ *                 name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *       400:
+ *         description: Dados inválidos ou campos obrigatórios ausentes
+ *       500:
+ *         description: Erro interno ao criar usuário
+ */
 usersRoute.post('/users', async (req, res) => {
     const user = req.body;
 
@@ -67,6 +118,41 @@ usersRoute.post('/users', async (req, res) => {
     }
 });
 
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   patch:
+ *     summary: Atualiza um usuário existente
+ *     tags: [Usuários]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do usuário
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Usuário atualizado com sucesso
+ *       400:
+ *         description: Nenhum atributo fornecido para atualização
+ *       500:
+ *         description: Erro ao atualizar usuário
+ */
 usersRoute.patch('/users/:id', async (req, res) => {
 
     const user = req.body;
@@ -104,6 +190,26 @@ usersRoute.patch('/users/:id', async (req, res) => {
     };
 });
 
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Remove um usuário
+ *     tags: [Usuários]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do usuário
+ *     responses:
+ *       202:
+ *         description: Usuário removido com sucesso
+ *       500:
+ *         description: Erro ao remover usuário
+ */
 usersRoute.delete('/users/:id', async (req, res) => {
     const id = req.params.id;
 
@@ -131,6 +237,37 @@ usersRoute.delete('/users/:id', async (req, res) => {
     }
 });
 
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Busca um usuário pelo ID
+ *     tags: [Usuários]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do usuário
+ *     responses:
+ *       200:
+ *         description: Usuário encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 userId:
+ *                   type: integer
+ *                 name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *       404:
+ *         description: Usuário não encontrado
+ */
 usersRoute.get('/users/:id', async (req, res) => {
     const id = req.params.id;
 
@@ -151,6 +288,32 @@ usersRoute.get('/users/:id', async (req, res) => {
     }
 });
 
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Lista todos os usuários
+ *     tags: [Usuários]
+ *     responses:
+ *       200:
+ *         description: Lista de usuários cadastrados
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   userId:
+ *                     type: integer
+ *                   name:
+ *                     type: string
+ *                   email:
+ *                     type: string
+ *       404:
+ *         description: Nenhum usuário encontrado
+ */
 usersRoute.get('/users', async (req, res) => {
     try {
         const response = await readUser();

@@ -39,6 +39,8 @@ export async function App() {
 
     const server = app.listen(PORT, () => {
         console.log(`Servidor rodando na porta ${PORT}`);
+
+        console.log(`Documentação visual e interativa das rotas e requisições disponível em http://localhost:3000/api-docs`);
     });
     return server;
 }

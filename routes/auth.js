@@ -8,10 +8,25 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/users.js';
+import request from 'supertest';
 
 const SECRET = 'hackateen_key';
 
 export const authRoute = express.Router();
+
+export async function setTokenForTest(user, appInstance) {
+    const loginResponse = await request(appInstance)
+        .post('/login')
+        .send({
+            email: user.email,
+            password: user.password,
+        });
+
+    const token = loginResponse.body.token;
+    console.log('Token gerado:', token);
+
+    return token;
+}
 
 /**
  * @swagger

@@ -5,7 +5,6 @@
 KomuniUI é uma API que visa facilitar a comunicação entre pessoas de uma comunidade local, com funcionalidades para criar avisos, eventos, pedidos e solicitações, e comentários. A API foi desenvolvida para organizar essas informações de maneira simples, eficiente e sem a bagunça de grupos informais de comunicação.
 
 ## Tecnologias Utilizadas
-
 Este projeto utiliza as seguintes tecnologias:
 
 - **Node.js:** Ambiente de execução JavaScript no lado do servidor.
@@ -48,7 +47,15 @@ npm run start:dev
 ```
 
 ## Acessar a API
-A API estará disponível localmente em <http://localhost:3000>.
+
+A API estará disponível localmente em:  
+[http://localhost:3000](http://localhost:3000)
+
+Essa é uma API REST, ou seja, não possui interface visual - as interações são feitas por meio de requisições HTTP (como GET, POST, PUT, DELETE) usando ferramentas como Postman, Insomnia ou diretamente pelo Swagger.
+
+## Documentação com Swagger
+A documentação interativa da API, onde é possível visualizar as rotas disponíveis, seus parâmetros e testar requisições diretamente pelo navegador, está disponível em: [http://localhost:3000/api-docs](http://localhost:3000/api-docs).
+
 
 ## Estrutura de Rotas
 A API é estruturada com as seguintes rotas principais:
@@ -68,10 +75,6 @@ npm run test-comments
 npm run test-posts
 ```
 
-## Swagger Documentation
-A documentação da API pode ser acessada através do Swagger, que está disponível em:
-<http://localhost:3000/api-docs>
-
 ## Estrutura do Projeto
 - **app.js**: Arquivo principal para inicializar o servidor.
 - **routes/**: Contém as rotas da API.
@@ -79,7 +82,6 @@ A documentação da API pode ser acessada através do Swagger, que está dispon�
 - **tests/**: Contém os testes automatizados.
 - **database/**: Contém os arquivos de configuração do banco de dados (por exemplo, configurações de conexão e inicialização).
 - **swagger.js**: Arquivo responsável pela configuração e geração da documentação da API usando Swagger.
-
 
 ## Considerações Finais
 Este projeto foi desenvolvido como parte do Hackateen, com o objetivo de criar uma plataforma simples e eficiente para melhorar a comunicação nas comunidades locais. Ao escolher as tecnologias, buscamos garantir a facilidade de uso, segurança e flexibilidade, permitindo que o sistema cresça conforme as necessidades da comunidade.
